@@ -20,23 +20,37 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 import UsersController from 'App/Controllers/Http/UsersController'
+import RegistersController from 'App/Controllers/Http/RegistersController'
 
-Route.get('/', async (ctx) => {
-  return new UsersController().index(ctx)
-})
+Route.group(() => {
 
-Route.post('/create', async (ctx) => {
-  return new UsersController().createUser(ctx)
-})
+  Route.group(() => {
 
-Route.delete('/delete', async (ctx) => {
-  return new UsersController().delete(ctx)
-})
+    Route.get('/', async (ctx) => {
+      return new UsersController().index(ctx)
+    })
+    
+    Route.post('/create', async (ctx) => {
+      return new UsersController().createUser(ctx)
+    })
+    
+    Route.delete('/delete', async (ctx) => {
+      return new UsersController().delete(ctx)
+    })
+    
+    Route.put('/update', async (ctx) => {
+      return new UsersController().update(ctx)
+    })
+    
+    Route.get('/read/:id', async (ctx) => {
+      return new UsersController().read(ctx)
+    })
 
-Route.put('/update', async (ctx) => {
-  return new UsersController().update(ctx)
-})
+  }).middleware('auth')
+  
+  
+  Route.post('/register', async (ctx) => {
+    return new RegistersController().register(ctx)
+  })
 
-Route.get('/read/:id', async (ctx) => {
-  return new UsersController().read(ctx)
-})
+}).prefix('api')
